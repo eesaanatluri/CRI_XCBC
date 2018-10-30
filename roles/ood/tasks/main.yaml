@@ -64,6 +64,12 @@
     regexp: '^cluster:'
     line: 'cluster: {{ cluster_name }}'
 
+- name: Remove content from submit.yml.erb
+  command: /usr/bin/sed -ie '/^/,$d' /var/www/ood/apps/sys/jupyter/submit.yml.erb
+ 
+- name: use the basic web server template for generating the job script
+  command: printf "batch_connect:\n  template: \"basic\"" > /var/www/ood/apps/sys/jupyter/submit.yml.erb 
+
 - name: Restart service httpd24-httpd to load jupyter app.
   service:
     name: httpd24-httpd
