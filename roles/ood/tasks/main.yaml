@@ -105,11 +105,6 @@
     - "rnode_uri: '/rnode'"
 >>>>>>> 8339ade... Add template for the submit script to the jupyter app.
 
-- name: Restart service httpd24-httpd to load jupyter app.
-  service:
-    name: httpd24-httpd
-    state: restarted
-
 - name: Stage http authz file for ood
   copy:
     src: htpasswd
