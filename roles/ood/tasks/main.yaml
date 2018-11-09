@@ -64,48 +64,12 @@
     regexp: '^cluster:'
     line: 'cluster: {{ cluster_name }}'
 
-- name: Remove content from submit.yml.erb
-  command: /usr/bin/sed -ie '/^/,$d' /var/www/ood/apps/sys/jupyter/submit.yml.erb
- 
-- name: use the basic web server template for generating the job script
-  command: printf "batch_connect:\n  template: \"basic\"" > /var/www/ood/apps/sys/jupyter/submit.yml.erb 
-
 - name: Add jupyter job submit script
   template:
     src: jupyter-submit.yml.erb
     dest: /var/www/ood/apps/sys/jupyter/submit.yml.erb
      
-- name: Create interactive desktop settings directory
-  file:
-    path: /etc/ood/config/apps/bc_desktop
-    state: directory
-
-- name: Add interactive desktop settings
-  template:
-    src: bc_desktop/cluster.yml
-    dest: /etc/ood/config/apps/bc_desktop/{{ cluster_name }}.yml
-
-- name: Create interactive desktop job submit script directory
-  file:
-    path: /etc/ood/config/apps/bc_desktop/submit
-    state: directory
-
-- name: Add interactive desktop job submit script
-  template:
-    src: bc_desktop/submit.yml.erb
-    dest: /etc/ood/config/apps/bc_desktop/submit/submit.yml.erb
-
-- name: Enable reverse proxy
-  lineinfile:
-    path: /etc/ood/config/ood_portal.yml
-    line: '{{ item }}'
-  with_items:
-    - "host_regex: '{{ compute_node_glob }}.localdomain'"
-    - "node_uri: '/node'"
-    - "rnode_uri: '/rnode'"
->>>>>>> 8339ade... Add template for the submit script to the jupyter app.
-
-- name: Stage http authz file for ood
+ name: Stage http authz file for ood
   copy:
     src: htpasswd
     dest: /opt/rh/httpd24/root/etc/httpd/.htpasswd
