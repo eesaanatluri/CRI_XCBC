@@ -64,7 +64,12 @@
     regexp: '^cluster:'
     line: 'cluster: {{ cluster_name }}'
 
-- name: Add jupyter job submit script
+- name: Use submit.yml.erb file tailored for slurm usage at UAB 
+  copy:
+    src: jupyter-submit.yml.erb
+    dest: /var/www/ood/apps/sys/jupyter/submit.yml.erb
+
+ Add the tailored submit script for our environment.
   template:
     src: jupyter-submit.yml.erb
     dest: /var/www/ood/apps/sys/jupyter/submit.yml.erb
