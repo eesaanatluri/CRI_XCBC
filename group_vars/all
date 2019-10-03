@@ -171,6 +171,9 @@
 #XdMod Variables
 
 # XDmod
+
+  enable_xdmod: true 
+
   headnode_public_ip: "{{ ohpc_public_ip }}"
 
 
