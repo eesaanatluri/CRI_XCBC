@@ -171,7 +171,7 @@
 #XdMod Variables
 
 # XDmod
-  headnode_public_ip: "{{ ohpc_ip_add }}"
+  headnode_public_ip: "{{ ohpc_public_ip }}"
 
 
   xdmod_version: 8.0.0
@@ -186,7 +186,7 @@
   xdmod_orgname: "UAB RC"
   xdmod_org_abbr: "UAB"
 
-  xdmod_address: "{{ ohpc_ip_add +':80'}}"
+  xdmod_address: "{{ headnode_public_ip +':80'}}"
   xdmod_contact_email: "chirag24@uab.edu" #please change this!
   xdmod_admin_email: "chirag24@uab.edu"
 
