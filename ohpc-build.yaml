@@ -12,3 +12,4 @@
     - { name: 'ohpc_user_reg', tags: 'ohpc_user_reg', when: enable_user_reg }
     - { name: 'reg_user_create_scripts', tags: 'reg_user_create_scripts', when: enable_user_create_scripts }
     - { name: 'import_slurm_acct_db', tags: 'import_slurm_acct_db'}
+    - { name: 'fix_slurmdb_history', tags: 'fix_slurmdb_history'}
