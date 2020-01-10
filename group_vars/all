@@ -173,5 +173,7 @@
   slurmdb_dump_file_path: "/home/centos/slurmdb_backup_20191014_032723.tar.gz"
   db_fix_hierarchy_archive: "/home/centos/hierarchy-files.tar.gz"
   uid_name_file_path: "/home/centos/fix-uids-name.csv"
-  hierarchy_file_path: "/home/centos/depttoschoolmapping.csv"
-  group_to_hierarchy_file_path: "/home/centos/cheahausers.csv" 
+
+# PCP
+  enable_pcp: true
+  PCP_LOG_DIR: "/home/centos/supremm"
