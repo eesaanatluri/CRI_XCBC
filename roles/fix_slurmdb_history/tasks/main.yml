@@ -1,0 +1,17 @@
+---
+
+- name: Unzip the input files for slurmdb fix and hierarchy files
+  unarchive:
+    src: {{ db_fix_hierarchy_archive }}
+    dest: /home/centos/
+
+- name: Clone the repo having scripts to fix slurmdb
+  git:
+    repo: "{{ slurm_db_fix_repo_url }}"
+    dest: /home/centos/fix-slurm-acct-db
+
+- name: Run the script to fix runaway jobs start and end times
+  command: /home/centos/fix-slurm-acct-db/fix-runaway-jobs
+
+- name: Fix missing slurm accounts and assocs
+  command: /home/centos/fix-slurm-acct-db/fix-null-accounts-and-assoc-ids "{{ uid_name_file_path }}"
