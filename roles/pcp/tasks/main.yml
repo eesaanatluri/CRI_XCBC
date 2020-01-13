@@ -1,0 +1,85 @@
+---
+
+- name: Install PCP related packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - https://dl.bintray.com/pcp/el7/pcp-conf-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/pcp-libs-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/pcp-libs-devel-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/pcp-selinux-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/pcp-3.12.2-1.x86_64.rpm 
+    - https://dl.bintray.com/pcp/el7/perl-PCP-PMDA-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/python-pcp-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/pcp-pmda-gpfs-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/pcp-pmda-lustre-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/pcp-pmda-mic-3.12.2-1.x86_64.rpm	 
+    - https://dl.bintray.com/pcp/el7/pcp-pmda-nfsclient-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/pcp-pmda-nvidia-gpu-3.12.2-1.x86_64.rpm 
+    - https://dl.bintray.com/pcp/el7/pcp-pmda-perfevent-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/pcp-pmda-slurm-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/pcp-system-tools-3.12.2-1.x86_64.rpm
+    - https://dl.bintray.com/pcp/el7/perl-PCP-LogImport-3.12.2-1.x86_64.rpm
+
+- name: pmlogger control file template
+  template:
+    src: control.j2
+    dest: /etc/pcp/pmlogger/control
+    owner: root
+    group: root
+    mode: 0644
+
+- name: remove existing files under /etc/pcp/pmlogger/control.d/
+  file:
+    path: /etc/pcp/pmlogger/control.d/local
+    state: absent
+
+- name: pmlogger supremm config file template
+  template:
+    src: pmlogger-supremm.config.j2
+    dest: /etc/pcp/pmlogger/pmlogger-supremm.config
+    owner: root
+    group: root
+    mode: 0644
+
+- name: process logging config file template
+  template:
+    src: hotproc.conf.j2
+    dest: /var/lib/pcp/pmdas/proc/hotproc.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: enable logging modules PMDAs
+  file:
+    path: '/var/lib/pcp/pmdas/{{ item }}'
+    state: touch
+    owner: root
+    group: root
+  loop:
+    - slurm/.NeedInstall
+    - nvidia/.NeedInstall
+    - gpfs/.NeedInstall
+    - nfsclient/.NeedInstall
+    - perfevent/.NeedInstall
+    - mic/.NeedInstall
+
+- name: Configure Global process capture
+  template:
+    src: pmcd.conf.j2
+    dest: /etc/pcp/pmcd/pmcd.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Disable daily archive rollup
+  template:
+    src: pcp-pmlogger.j2
+    dest: /etc/cron.d/pcp-pmlogger
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Restart PMCD
+  command: systemctl restart pmcd
