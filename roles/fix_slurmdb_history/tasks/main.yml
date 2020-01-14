@@ -2,7 +2,7 @@
 
 - name: Unzip the input files for slurmdb fix and hierarchy files
   unarchive:
-    src: {{ db_fix_hierarchy_archive }}
+    src: "{{ db_fix_hierarchy_archive }}"
     dest: /home/centos/
 
 - name: Clone the repo having scripts to fix slurmdb
